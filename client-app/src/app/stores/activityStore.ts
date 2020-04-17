@@ -12,7 +12,7 @@ class ActivityStore {
   @observable loadingInitial = false;
   @observable editMode = false;
   @observable submitting = false;
-  @observable target = "";
+  @observable target = '';
 
   @computed get activitiesByDate() {
     return Array.from(this.activityRegistry.values()).sort(
