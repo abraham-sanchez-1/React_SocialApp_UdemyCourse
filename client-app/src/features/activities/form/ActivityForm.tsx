@@ -1,9 +1,6 @@
 import React, { useState, FormEvent, useContext, useEffect } from "react";
 import { Segment, Form, Button, Grid } from "semantic-ui-react";
-import {
-  IActivityFormValues,
-  ActivityFormValue,
-} from "../../../app/models/activity";
+import { ActivityFormValues } from "../../../app/models/activity";
 import { v4 as uuid } from "uuid";
 import ActivityStore from "../../../app/stores/activityStore";
 import { observer } from "mobx-react-lite";
@@ -13,7 +10,7 @@ import TextInput from "../../../app/common/form/TextInput";
 import TextAreaInput from "../../../app/common/form/TextAreaInput";
 import { SelectInput } from "../../../app/common/form/SelectInput";
 import { category } from "../../../app/common/options/categoryOptions";
-import  DateInput  from "../../../app/common/form/DateInput";
+import DateInput from "../../../app/common/form/DateInput";
 import { combineDateAndTime } from "../../../app/common/util/util";
 
 interface DetailParams {
@@ -34,14 +31,16 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     clearActivity,
   } = activityStore;
 
-  const [activity, setActivity] = useState(new ActivityFormValue());
+  const [activity, setActivity] = useState(new ActivityFormValues());
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (match.params.id) {
       setLoading(true);
       loadActivity(match.params.id)
-        .then((activity) => setActivity(new ActivityFormValue(activity)))
+        .then((activity) => {
+          setActivity(new ActivityFormValues(activity));
+        })
         .finally(() => setLoading(false));
     }
   }, [loadActivity, match.params.id]);
@@ -49,14 +48,15 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
   const handleFinalFormSubmit = (values: any) => {
     const dateAndTime = combineDateAndTime(values.date, values.time);
     const { date, time, ...activity } = values;
+    console.log(dateAndTime);
     activity.date = dateAndTime;
-    
-    if (activity.id) {
+
+    if (!activity.id) {
       let newActivity = {
         ...activity,
         id: uuid(),
       };
-      console.log(activity);
+      console.log(newActivity);
       createActivity(newActivity);
     } else {
       editActivity(activity);
@@ -92,7 +92,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
                   value={activity.category}
                   component={SelectInput}
                 />
-                <Form.Group width="equal">
+                <Form.Group widths='equal'>
                   <Field
                     component={DateInput}
                     name='date'

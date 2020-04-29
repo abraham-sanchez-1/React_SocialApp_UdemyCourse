@@ -85,7 +85,6 @@ class ActivityStore {
 
   @action createActivity = async (activity: IActivity) => {
     this.submitting = true;
-    console.log(activity);
     try {
       await agent.Activities.create(activity);
       runInAction("creating activity", () => {
@@ -96,7 +95,8 @@ class ActivityStore {
     } catch (error) {
       runInAction("create activity error", () => {
         this.submitting = false;
-        console.log(error);
+        toast.error('Problem submitting data');
+        console.log(error.response);
       });
     }
   };
@@ -114,7 +114,8 @@ class ActivityStore {
     } catch (error) {
       runInAction("edit activity error", () => {
         this.submitting = false;
-        console.log(error);
+        toast.error('Problem submitting data');
+        console.log(error.response);
       });
     }
   };
