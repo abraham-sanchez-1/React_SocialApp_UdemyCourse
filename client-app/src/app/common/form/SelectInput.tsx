@@ -6,7 +6,7 @@ interface IProps
   extends FieldRenderProps<string, HTMLInputElement>,
     FormFieldProps {}
 
-export const SelectInput: React.FC<IProps> = ({
+const SelectInput: React.FC<IProps> = ({
     input,
   width,
   options,
@@ -29,3 +29,5 @@ export const SelectInput: React.FC<IProps> = ({
       </Form.Field>
     )
 }
+
+export default SelectInput;
