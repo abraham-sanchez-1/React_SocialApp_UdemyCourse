@@ -50,5 +50,6 @@ register: (user: IUserFormValues): Promise<IUser> => requests.post(`/user/regist
 }
 
 export default {
-    Activities
+    Activities,
+    User
 }
