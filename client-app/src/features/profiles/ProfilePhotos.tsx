@@ -12,11 +12,15 @@ const ProfilePhotos = () => {
     uploadPhoto,
     uploadingPhoto,
     setMainPhoto,
+    deletePhoto,
     loading,
   } = rootStore.profileStore;
   const [addPhotoMode, setAddPhotoMode] = useState(false);
 
-  const [target, setTarget] = useState<string | undefined>(undefined)
+  const [target, setTarget] = useState<string | undefined>(undefined);
+  const [deleteTarget, setDeleteTarget] = useState<string | undefined>(
+    undefined
+  );
 
   const handleUploadImage = (photo: Blob) => {
     uploadPhoto(photo).then(() => setAddPhotoMode(false));
@@ -51,10 +55,10 @@ const ProfilePhotos = () => {
                     {isCurrentUser && (
                       <Button.Group fluid widths={2}>
                         <Button
-                        name={photo.id}
+                          name={photo.id}
                           onClick={(e) => {
                             setMainPhoto(photo);
-                            setTarget(e.currentTarget.name)
+                            setTarget(e.currentTarget.name);
                           }}
                           disabled={photo.isMain}
                           loading={loading && target === photo.id}
@@ -62,7 +66,18 @@ const ProfilePhotos = () => {
                           positive
                           content="Main"
                         />
-                        <Button basic negative icon="trash" />
+                        <Button
+                          name={photo.id}
+                          disabled={photo.isMain}
+                          onClick={(e) => {
+                            deletePhoto(photo);
+                            setDeleteTarget(e.currentTarget.name)
+                          } }
+                          loading={loading && deleteTarget === photo.id}
+                          basic
+                          negative
+                          icon="trash"
+                        />
                       </Button.Group>
                     )}
                   </Card>
