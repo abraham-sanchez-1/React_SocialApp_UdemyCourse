@@ -42,7 +42,10 @@ export default class ActivityStore {
       );
 
       this.hubConnection.on("ReceiveComment", comment => {
-        this.activity!.comments.push(comment);
+        runInAction(() => {
+          this.activity!.comments.push(comment);
+        })
+        
       })
   };
 
